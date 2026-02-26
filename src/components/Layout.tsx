@@ -1,6 +1,6 @@
 import NavigationBar from './NavigationBar'
 import HeroSection from './HeroSection'
-import { useRef } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import gsap from "gsap";
 import { useEffect } from 'react';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,69 +10,123 @@ const Layout = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
+  const lockRef = useRef<HTMLImageElement>(null);
+  const descRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     const bg = bgRef.current;
     const text = textRef.current;
+    const lock = lockRef.current;
+    const desc = descRef.current;
 
-    if (!section || !bg || !text) return;
+    if (!section || !bg || !text || !lock || !desc) return;
+
+    gsap.set(desc, { opacity: 0 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: "top top",
-        end: "+=150%",
+        end: "+=500%", // Increased for better "smoothness"
         scrub: 1,
         pin: true,
       },
     });
 
-    // 1. Hardware Lock Animation (Ellipse)
-    tl.fromTo(bg, 
+    tl.fromTo(bg,
       { clipPath: "ellipse(0% 50% at 50% 100%)" },
-      { 
+      {
         clipPath: "ellipse(100% 100% at 50% 100%)",
         scale: 1.15,
-        ease: "none" 
+        ease: "none"
       }
-    ).to(bg, {
-      y: -200,
-      ease: "none",
-    }, 0);
+    );
+    tl.to(bg, { y: -200, ease: "none" }, 0);
 
-    // 2. Text Fill Animation (Happening simultaneously)
+
+    tl.to(lock, {
+      x: "-80%",
+      duration: 1,
+      ease: "power2.inOut"
+    }, ">"); // ">" means "start after previous animation ends"
+
+
     tl.to(text, {
       backgroundSize: "100% 100%",
+      duration: 1.5,
       ease: "none",
-    }, 0);
+    }, "<"); // "<" means "start at the same time as the image shift"
+
+    tl.to(desc, {
+      opacity: 1,
+      duration: 1,
+      ease: "power1.in"
+    }, "<"); // Starts at the same time as the text fill
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, []);
 
+  console.log();
 
-  // useEffect(() => {
-  //   const tl = gsap.timeline({
-  //     scrollTrigger: {
-  //       trigger: textRef,
-  //       start: "top top",
-  //       end: "+=100%",
-  //       scrub: true,
-  //       pin: true,
-  //     },
-  //   });
 
-  //   tl.to(textRef.current, {
-  //     backgroundSize: "100% 100%",
-  //     ease: "none",
-  //   }, 0);
+  console.log();
 
-  //   return () => {
-  //     ScrollTrigger.killAll();
-  //   };
+
+  // useLayoutEffect(() => {
+  //   const section = sectionRef.current;
+  //   const bg = bgRef.current;
+  //   const text = textRef.current;
+
+  //   if (!section || !bg || !text) return;
+
+  //   const ctx = gsap.context(() => {
+
+  //     // HERO TIMELINE
+  //     const heroTl = gsap.timeline({
+  //       scrollTrigger: {
+  //         trigger: section,
+  //         start: "top top",
+  //         end: "+=150%",
+  //         scrub: 1,
+  //         pin: true,
+  //       },
+  //     });
+
+  //     heroTl.fromTo(bg,
+  //       { clipPath: "ellipse(0% 50% at 50% 100%)" },
+  //       {
+  //         clipPath: "ellipse(100% 100% at 50% 100%)",
+  //         scale: 1.15,
+  //         ease: "none",
+  //       }
+  //     ).to(bg, { y: -200, ease: "none" }, 0);
+
+  //     // TEXT ANIMATION (separate)
+  //     gsap.fromTo(text,
+  //       { backgroundSize: "0% 100%" },
+  //       {
+  //         backgroundSize: "100% 100%",
+  //         ease: "none",
+  //         scrollTrigger: {
+  //           trigger: section,
+  //           start: "bottom bottom",
+  //           end: "+=100%",
+  //           scrub: 1,
+  //         }
+  //       }
+  //     );
+
+  //   }, section); // scope
+
+  //   return () => ctx.revert(); // clean properly
+
   // }, []);
+
+
+
 
   return (
     <>
@@ -80,25 +134,39 @@ const Layout = () => {
         <NavigationBar />
       </div>
       <div className='relative -top-87.5 w-full'>
-        <HeroSection sectionRef={sectionRef} bgRef={bgRef} />
+        <HeroSection sectionRef={sectionRef} bgRef={bgRef} lockRef={lockRef} descRef={descRef} />
       </div>
-      {/* <p className='relative -top-87.5 w-full text-[80px]/25 font-bold py-20 px-10'>
-        LironLocks: Where Uncompromising Strength Meets the Art of Modern Engineering.
-      </p> */}
       <p
         ref={textRef}
-        className='relative -top-87.5 w-full text-[80px]/[1.1] font-bold py-20 px-10 
-             bg-clip-text text-transparent bg-no-repeat'
+        className="relative -top-87.5 w-full text-[80px]/[1.1] font-bold py-20 px-10 text-transparent bg-no-repeat"
         style={{
-          // Light gray base
+          // The "Base" color (Light Gray)
           backgroundColor: '#d1d5db',
-          // The "fill" gradient (replace colors with your brand colors)
+          // The "Fill" color (Gold Gradient)
           backgroundImage: 'linear-gradient(90deg, #facc15, #eab308)',
-          backgroundSize: '0% 100%', // Start with 0% width
+          // Start at 0% size (shows gray), GSAP will animate this to 100%
+          backgroundSize: '0% 100%',
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
         }}
       >
         LironLocks: Where Uncompromising Strength Meets the Art of Modern Engineering.
       </p>
+
+      {/* <p
+          ref={textRef}
+          className="relative -top-87.5 w-full text-[80px]/[1.1] font-bold py-20 px-10"
+          style={{ color: '#d1d5db' }}
+        >
+          {"LironLocks: Where Uncompromising Strength Meets the Art of Modern Engineering."
+            .split("")
+            .map((char, i) => (
+              <span key={i} className="char">
+                {char}
+              </span>
+            ))}
+        </p> */}
+
 
     </>
   )

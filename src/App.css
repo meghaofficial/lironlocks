@@ -6,3 +6,16 @@
   --color-surface: #F1EFEC;
   --color-dark: #030303;
 }
+
+.italiana {
+  font-family: "Italiana", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.quicksand {
+  font-family: "Quicksand", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}

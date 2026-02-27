@@ -22,6 +22,8 @@ const Layout = () => {
 
     if (!section || !bg || !text || !lock || !desc) return;
 
+    const chars = text.querySelectorAll(".char");
+
     gsap.set(desc, { opacity: 0 });
 
     const tl = gsap.timeline({
@@ -51,6 +53,11 @@ const Layout = () => {
       ease: "power2.inOut"
     }, ">"); // ">" means "start after previous animation ends"
 
+    tl.to(desc, {
+      opacity: 1,
+      duration: 1,
+      ease: "power1.in"
+    }, "<"); // Starts at the same time as the text fill
 
     tl.to(text, {
       backgroundSize: "100% 100%",
@@ -58,78 +65,13 @@ const Layout = () => {
       ease: "none",
     }, "<"); // "<" means "start at the same time as the image shift"
 
-    tl.to(desc, {
-      opacity: 1,
-      duration: 1,
-      ease: "power1.in"
-    }, "<"); // Starts at the same time as the text fill
-
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, []);
 
-  console.log();
-
-
-  console.log();
-
-
-  // useLayoutEffect(() => {
-  //   const section = sectionRef.current;
-  //   const bg = bgRef.current;
-  //   const text = textRef.current;
-
-  //   if (!section || !bg || !text) return;
-
-  //   const ctx = gsap.context(() => {
-
-  //     // HERO TIMELINE
-  //     const heroTl = gsap.timeline({
-  //       scrollTrigger: {
-  //         trigger: section,
-  //         start: "top top",
-  //         end: "+=150%",
-  //         scrub: 1,
-  //         pin: true,
-  //       },
-  //     });
-
-  //     heroTl.fromTo(bg,
-  //       { clipPath: "ellipse(0% 50% at 50% 100%)" },
-  //       {
-  //         clipPath: "ellipse(100% 100% at 50% 100%)",
-  //         scale: 1.15,
-  //         ease: "none",
-  //       }
-  //     ).to(bg, { y: -200, ease: "none" }, 0);
-
-  //     // TEXT ANIMATION (separate)
-  //     gsap.fromTo(text,
-  //       { backgroundSize: "0% 100%" },
-  //       {
-  //         backgroundSize: "100% 100%",
-  //         ease: "none",
-  //         scrollTrigger: {
-  //           trigger: section,
-  //           start: "bottom bottom",
-  //           end: "+=100%",
-  //           scrub: 1,
-  //         }
-  //       }
-  //     );
-
-  //   }, section); // scope
-
-  //   return () => ctx.revert(); // clean properly
-
-  // }, []);
-
-
-
-
   return (
-    <>
+    <div className='bg-gray-100'>
       <div className='p-6 z-999 fixed w-full'>
         <NavigationBar />
       </div>
@@ -143,7 +85,7 @@ const Layout = () => {
           // The "Base" color (Light Gray)
           backgroundColor: '#d1d5db',
           // The "Fill" color (Gold Gradient)
-          backgroundImage: 'linear-gradient(90deg, #facc15, #eab308)',
+          backgroundImage: 'linear-gradient(90deg, #facc15, #01204e)',
           // Start at 0% size (shows gray), GSAP will animate this to 100%
           backgroundSize: '0% 100%',
           WebkitBackgroundClip: 'text',
@@ -154,21 +96,21 @@ const Layout = () => {
       </p>
 
       {/* <p
-          ref={textRef}
-          className="relative -top-87.5 w-full text-[80px]/[1.1] font-bold py-20 px-10"
-          style={{ color: '#d1d5db' }}
-        >
-          {"LironLocks: Where Uncompromising Strength Meets the Art of Modern Engineering."
-            .split("")
-            .map((char, i) => (
-              <span key={i} className="char">
-                {char}
-              </span>
-            ))}
-        </p> */}
+        ref={textRef}
+        className="relative -top-87.5 w-full text-[80px]/[1.1] font-bold py-20 px-10"
+        style={{ color: '#d1d5db' }}
+      >
+        {"LironLocks: Where Uncompromising Strength Meets the Art of Modern Engineering."
+          .split("")
+          .map((char, i) => (
+            <span key={i} className="char">
+              {char}
+            </span>
+          ))}
+      </p> */}
 
 
-    </>
+    </div>
   )
 }
 

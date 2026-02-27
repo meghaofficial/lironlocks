@@ -122,12 +122,12 @@ export default function NavigationBar() {
                               key={item.title}
                               className="cursor-pointer ms-12"
                             >
-                              <p className="font-semibold text-gray-800 group-hover:text-brand hover:font-bold transition">
+                              <p className="font-semibold text-gray-800 group-hover:text-brand hover:font-bold transition" onClick={() => navigate(`/${item.title}`)}>
                                 {item.title}
                               </p>
                               <div className="flex flex-col gap-2 mt-2">
                                 {item.subCats.map(s => (
-                                  <p className="text-sm font-normal text-gray-500 hover:text-black cursor-pointer hover:font-semibold">
+                                  <p className="text-sm font-normal text-gray-500 hover:text-black cursor-pointer hover:font-semibold" onClick={() => navigate(`/${item.title}/${s}`)}>
                                     {s}
                                   </p>
                                 ))}

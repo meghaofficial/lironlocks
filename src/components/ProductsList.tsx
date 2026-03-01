@@ -33,7 +33,7 @@ const ProductsList = () => {
         {/* upper with heading and 2 images */}
         <div className='flex gap-7'>
           <div className='w-1/2'>
-            <p className='text-[100px] quicksand'>{params?.category_name}</p>
+            <p className='text-[100px]/25 quicksand'>{params?.category_name}</p>
             {params?.sub_category ? (
               <p className='italiana text-[50px]'>{params?.sub_category}</p>
             ) : (

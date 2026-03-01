@@ -1,14 +1,18 @@
-import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import hero_bg from "../assets/hero_bg.jpeg";
-import hero_lock_img from "../assets/hero_lock_img.png";
 import CustomBtn from "./CustomBtn";
 
 gsap.registerPlugin(ScrollTrigger);
 
+type HeroSectionType = {
+  sectionRef: React.RefObject<HTMLDivElement | null>;
+  bgRef: React.RefObject<HTMLDivElement | null>;
+  lockRef: React.RefObject<HTMLImageElement | null>;
+  descRef: React.RefObject<HTMLDivElement | null>;
+};
+
 export default function HeroSection(
-  { sectionRef, bgRef, textRef, lockRef, descRef }: { sectionRef: HTMLDivElement | null; bgRef: HTMLDivElement | null; lockRef: HTMLImageElement | null; descRef: HTMLDivElement | null; }
+  { sectionRef, bgRef, lockRef, descRef }: HeroSectionType
 ) {
   return (
     <section
@@ -22,12 +26,12 @@ export default function HeroSection(
         style={{
           // clipPath: "ellipse(0% 50% at 50% 100%)",
           backgroundImage:
-            `url(${hero_bg})`,
+            `url(https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265265/hero_bg_pbi6hf.jpg)`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
-      <img src={hero_lock_img} alt="lock" className="absolute left-[35%] top-25 h-107.5" ref={lockRef} />
+      <img src={`https://res.cloudinary.com/dlmdsldqn/image/upload/v1772262814/Picsart_26-02-27_23-38-23-989_igfj0h.png`} alt="lock" className="absolute left-[35%] top-25 h-107.5" ref={lockRef} />
 
       {/* Content */}
       <div className="absolute z-10 h-screen flex flex-col items-end justify-center text-white text-center px-6 right-[5%]" ref={descRef}>

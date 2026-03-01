@@ -2,10 +2,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
-import deadlock_icon from "../assets/deadlock_icon.png";
-import cylinder_icon from "../assets/cylinder_icon.png";
-import handle_icon from "../assets/handles_icon.png";
-import mortice_icon from "../assets/mortice_icon.png";
 import { AiOutlineDownload } from "react-icons/ai";
 import catalogue from "../assets/LIRON CATALOGUE.pdf";
 
@@ -15,7 +11,6 @@ type MenuSection = {
     title: string;
     subCats: string[],
     icon: string,
-    description: string;
   }[];
 };
 
@@ -31,7 +26,7 @@ const menuData: MenuSection[] = [
           "Four Round Bullet",
           "Slim"
         ],
-        icon: mortice_icon,
+        icon: `https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265265/mortice_icon_l0dqma.png`,
       },
       {
         title: "Handles",
@@ -41,7 +36,7 @@ const menuData: MenuSection[] = [
           "Iron Handles",
           "Stainless Steel Rose Handles"
         ],
-        icon: handle_icon,
+        icon: `https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265264/handles_icon_tmblo3.png`,
       },
       {
         title: "Cylinders",
@@ -49,7 +44,7 @@ const menuData: MenuSection[] = [
           "Both Side Regular Key",
           "Both Side Ultra Key",
         ],
-        icon: cylinder_icon,
+        icon: `https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265265/cylinder_icon_ognc6m.png`,
       },
       {
         title: "Dead Locks",
@@ -60,7 +55,7 @@ const menuData: MenuSection[] = [
           "Super Drawer Lock",
           "CP Drawer Lock"
         ],
-        icon: deadlock_icon,
+        icon: `https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265264/deadlock_icon_ehjok5.png`,
       },
     ],
   },

@@ -1,11 +1,8 @@
-import React from 'react'
-import hero_lock_img from '../assets/hero_lock_img.png';
-
 const ProductCard = () => {
   return (
-    <div className='bg-gray-100 h-[300px]'>
+    <div className='bg-gray-100 h-75'>
       <div className='p-10'>
-        <img src={hero_lock_img} alt="" className='h-auto' />
+        <img src={`https://res.cloudinary.com/dlmdsldqn/image/upload/v1772262814/Picsart_26-02-27_23-38-23-989_igfj0h.png`} alt="" className='h-auto' />
       </div>
     </div>
   )

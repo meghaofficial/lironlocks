@@ -1,114 +1,106 @@
 import NavigationBar from './NavigationBar'
 import HeroSection from './HeroSection'
-import { useRef, useLayoutEffect } from 'react';
+import { useRef } from 'react';
 import gsap from "gsap";
 import { useEffect } from 'react';
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import CategoryCard from './CategoryCard';
+import lion from '../assets/lion.png'
 
 const Layout = () => {
 
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
-  const lockRef = useRef<HTMLImageElement>(null);
-  const descRef = useRef<HTMLDivElement>(null);
+  const parentRef = useRef<HTMLDivElement>(null);
+  const triggerSectionRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
 
+  // text
   useEffect(() => {
-    const section = sectionRef.current;
-    const bg = bgRef.current;
-    const text = textRef.current;
-    const lock = lockRef.current;
-    const desc = descRef.current;
+    const chars = textRef.current?.querySelectorAll(".char");
+    if (!chars) return;
 
-    if (!section || !bg || !text || !lock || !desc) return;
-
-    const chars = text.querySelectorAll(".char");
-
-    gsap.set(desc, { opacity: 0 });
-
-    const tl = gsap.timeline({
+    gsap.to(chars, {
+      opacity: 1,
+      stagger: 0.05,
+      ease: "none",
       scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: "+=500%", // Increased for better "smoothness"
-        scrub: 1,
-        pin: true,
-      },
+        trigger: textRef.current,
+        start: "top 80%",
+        end: "top+=100 top",
+        scrub: true,
+      }
     });
 
-    tl.fromTo(bg,
-      { clipPath: "ellipse(0% 50% at 50% 100%)" },
-      {
-        clipPath: "ellipse(100% 100% at 50% 100%)",
-        scale: 1.15,
-        ease: "none"
-      }
-    );
-    tl.to(bg, { y: -200, ease: "none" }, 0);
+  }, []);
 
+  useEffect(() => {
+    if (!parentRef.current || !triggerSectionRef.current) return;
 
-    tl.to(lock, {
-      x: "-80%",
-      duration: 1,
-      ease: "power2.inOut"
-    }, ">"); // ">" means "start after previous animation ends"
-
-    tl.to(desc, {
-      opacity: 1,
-      duration: 1,
-      ease: "power1.in"
-    }, "<"); // Starts at the same time as the text fill
-
-    tl.to(text, {
-      backgroundSize: "100% 100%",
-      duration: 1.5,
+    gsap.to(parentRef.current, {
+      backgroundColor: "#030303", // new color
       ease: "none",
-    }, "<"); // "<" means "start at the same time as the image shift"
-
-    return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
-    };
+      scrollTrigger: {
+        trigger: triggerSectionRef.current,
+        start: "top 80%",   // when section enters view
+        end: "top 20%",     // how long transition lasts
+        scrub: true,
+      }
+    });
   }, []);
 
   return (
-    <div className='bg-gray-100'>
+    <div className='bg-gray-100 transition-colors duration-500' ref={parentRef}>
       <div className='p-6 z-999 fixed w-full'>
         <NavigationBar />
       </div>
       <div className='relative -top-87.5 w-full'>
-        <HeroSection sectionRef={sectionRef} bgRef={bgRef} lockRef={lockRef} descRef={descRef} />
+        <HeroSection />
       </div>
+
       <p
         ref={textRef}
-        className="relative -top-87.5 w-full text-[80px]/[1.1] font-bold py-20 px-10 text-transparent bg-no-repeat"
-        style={{
-          // The "Base" color (Light Gray)
-          backgroundColor: '#d1d5db',
-          // The "Fill" color (Gold Gradient)
-          backgroundImage: 'linear-gradient(90deg, #facc15, #01204e)',
-          // Start at 0% size (shows gray), GSAP will animate this to 100%
-          backgroundSize: '0% 100%',
-          WebkitBackgroundClip: 'text',
-          backgroundClip: 'text',
-        }}
-      >
-        LironLocks: Where Uncompromising Strength Meets the Art of Modern Engineering.
-      </p>
-
-      {/* <p
-        ref={textRef}
-        className="relative -top-87.5 w-full text-[80px]/[1.1] font-bold py-20 px-10"
-        style={{ color: '#d1d5db' }}
+        className="
+          w-full
+          font-bold
+          py-20
+          px-6
+          break-words
+          text-[clamp(32px,8vw,80px)]
+          leading-[1.1] relative -top-87.5
+        "
       >
         {"LironLocks: Where Uncompromising Strength Meets the Art of Modern Engineering."
           .split("")
           .map((char, i) => (
             <span key={i} className="char">
-              {char}
+              {char === " " ? "\u00A0" : char}
             </span>
           ))}
-      </p> */}
+      </p>
 
+      {/* available categories */}
+      <div className='relative -top-87.5 w-full p-6'>
+        <div className='bg-white p-10 rounded-4xl'>
+
+          <p className='mb-10 text-[40px] font-bold bg-linear-to-r from-[#4B0082] to-brand bg-clip-text text-transparent'>
+            Explore Categories
+          </p>
+
+
+          <div className='grid grid-cols-4 gap-10'>
+            <CategoryCard name='Mortise Locks' />
+            <CategoryCard name='Handles' />
+            <CategoryCard name='Cylinders' />
+            <CategoryCard name='Dead Locks' />
+          </div>
+        </div>
+      </div>
+
+      {/* dd */}
+      <div
+        ref={triggerSectionRef}
+        className="min-h-screen flex items-center justify-center relative -top-87.5">
+          <img src={lion} alt="lion" className='w-1/2' ref={imgRef} />
+      </div>
 
     </div>
   )

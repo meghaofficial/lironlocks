@@ -1,19 +1,65 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CustomBtn from "./CustomBtn";
+import { useEffect, useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type HeroSectionType = {
-  sectionRef: React.RefObject<HTMLDivElement | null>;
-  bgRef: React.RefObject<HTMLDivElement | null>;
-  lockRef: React.RefObject<HTMLImageElement | null>;
-  descRef: React.RefObject<HTMLDivElement | null>;
-};
+export default function HeroSection() {
 
-export default function HeroSection(
-  { sectionRef, bgRef, lockRef, descRef }: HeroSectionType
-) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const lockRef = useRef<HTMLImageElement>(null);
+  const descRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const bg = bgRef.current;
+    const lock = lockRef.current;
+    const desc = descRef.current;
+
+    if (!section || !bg || !lock || !desc) return;
+
+    gsap.set(desc, { opacity: 0 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: "+=400%", // Increased for better "smoothness"
+        scrub: 1,
+        pin: true,
+      },
+    });
+
+    tl.fromTo(bg,
+      { clipPath: "ellipse(0% 50% at 50% 100%)" },
+      {
+        clipPath: "ellipse(100% 100% at 50% 100%)",
+        scale: 1.15,
+        ease: "none"
+      }
+    );
+    tl.to(bg, { y: -200, ease: "none" }, 0);
+
+
+    tl.to(lock, {
+      x: "-80%",
+      duration: 1,
+      ease: "power2.inOut"
+    }, ">"); // ">" means "start after previous animation ends"
+
+    tl.to(desc, {
+      opacity: 1,
+      duration: 1,
+      ease: "power1.in"
+    }, "<"); // Starts at the same time as the text fill
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, []);
+
   return (
     <section
       ref={sectionRef}
@@ -24,7 +70,6 @@ export default function HeroSection(
         ref={bgRef}
         className="absolute -bottom-100 left-0 w-full h-[150vh]"
         style={{
-          // clipPath: "ellipse(0% 50% at 50% 100%)",
           backgroundImage:
             `url(https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265265/hero_bg_pbi6hf.jpg)`,
           backgroundSize: "cover",

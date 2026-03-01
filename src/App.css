@@ -19,3 +19,23 @@
   font-weight: 500;
   font-style: normal;
 }
+
+.char {
+  background: linear-gradient(90deg, #4B0082, #01204e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0.2; /* start faded */
+}
+
+/* .char {
+  background: linear-gradient(90deg, #facc15, #01204e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 8px #facc15,
+    0 0 16px #facc15,
+    0 0 32px #01204e;
+} */

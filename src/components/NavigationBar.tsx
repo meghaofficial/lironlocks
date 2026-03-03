@@ -19,43 +19,32 @@ const menuData: MenuSection[] = [
     title: "Categories",
     items: [
       {
-        title: "Mortise Locks",
-        subCats: [
-          "CY Regular",
-          "CY Regular 2",
-          "Four Round Bullet",
-          "Slim"
-        ],
-        icon: `https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265265/mortice_icon_l0dqma.png`,
-      },
-      {
         title: "Handles",
         subCats: [
-          "SS Plate Zinc Die Casted Handle",
-          "Stainless Steel Handles",
-          "Iron Handles",
-          "Stainless Steel Rose Handles"
+          'Iron Handles',
+          'Rose Handles',
+          'SS Handles',
+          'Zinc Handle SS Plate'
         ],
         icon: `https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265264/handles_icon_tmblo3.png`,
       },
       {
-        title: "Cylinders",
-        subCats: [
-          "Both Side Regular Key",
-          "Both Side Ultra Key",
-        ],
-        icon: `https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265265/cylinder_icon_ognc6m.png`,
-      },
-      {
         title: "Dead Locks",
         subCats: [
-          "Tribolt",
-          "Ultra Drawer Lock",
-          "Fashion Drawer Lock",
-          "Super Drawer Lock",
-          "CP Drawer Lock"
+          'Drawer Locks',
+          'Door Locks'
         ],
         icon: `https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265264/deadlock_icon_ehjok5.png`,
+      },
+      {
+        title: "Mortise Locks",
+        subCats: [],
+        icon: `https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265265/mortice_icon_l0dqma.png`,
+      },
+      {
+        title: "Cylinders",
+        subCats: [],
+        icon: `https://res.cloudinary.com/dlmdsldqn/image/upload/v1772265265/cylinder_icon_ognc6m.png`,
       },
     ],
   },
@@ -110,7 +99,7 @@ export default function NavigationBar() {
                       <div className="space-y-5 grid grid-cols-2 gap-x-3 justify-between">
                         {section.items.map((item) => (
                           <div className="relative group hover:bg-gray-100 rounded-lg p-3">
-                            <div className="absolute mt-2 rounded-full p-2 bg-gray-300 cursor-pointer text-gray-400">
+                            <div className="absolute rounded-full p-2 bg-gray-300 cursor-pointer text-gray-400">
                               <img src={item.icon} alt="icon" className="h-4 w-4" />
                             </div>
                             <div
@@ -121,7 +110,7 @@ export default function NavigationBar() {
                                 {item.title}
                               </p>
                               <div className="flex flex-col gap-2 mt-2">
-                                {item.subCats.map(s => (
+                                {item.subCats.length > 0 && item.subCats.map(s => (
                                   <p className="text-sm font-normal text-gray-500 hover:text-black cursor-pointer hover:font-semibold" onClick={() => navigate(`/${item.title}/${s}`)}>
                                     {s}
                                   </p>

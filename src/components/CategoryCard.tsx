@@ -5,29 +5,30 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import { useState } from 'react';
 
 type CategoryCardType = {
-  name: string
+  name: string,
+  url: string
 }
 
-const CategoryCard = ({ name }: CategoryCardType) => {
+const CategoryCard = ({ name, url }: CategoryCardType) => {
 
   const [playVd, setPlayVd] = useState(false);
 
   return (
     <>
-      <div className={`bg-gray-200 rounded-3xl ${!playVd && 'p-4'} group cursor-pointer relative`}>
+      <div className={`bg-gray-200 rounded-3xl ${!playVd && ''} overflow-hidden group h-[315px] cursor-pointer relative`}>
         {playVd ? (
           <video 
             src={tempVideo} 
-            className='h-[305px] w-full object-cover rounded-[25px]' 
+            className='h-[315px] w-full object-cover rounded-[25px]' 
             autoPlay
             muted
             loop
             playsInline />
         ) : (
-          <img src="https://res.cloudinary.com/dlmdsldqn/image/upload/v1772262814/Picsart_26-02-27_23-38-23-989_igfj0h.png" alt="" className='group-hover:scale-100 scale-90 duration-500 ease-in-out transition-all' />
+          <img src={url} alt="" className='group-hover:scale-120 h-full object-cover w-full scale-100 duration-500 ease-in-out transition-all rounded-3xl' />
         )}
         {/* upper overlay */}
-        <div className="absolute top-0 left-0 w-full h-20 bg-linear-to-b from-black to-transparent rounded-t-3xl duration-500 ease-in-out transition-all opacity-0 group-hover:opacity-100">
+        <div className="absolute top-0 left-0 w-full h-20 bg-linear-to-b from-black to-transparent rounded-t-3xl duration-500 ease-in-out transition-all">
           <p className="text-white italiana text-center mt-5 text-xl">{name}</p>
         </div>
         {/* lower overlay */}
